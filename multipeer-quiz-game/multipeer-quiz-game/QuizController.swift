@@ -10,6 +10,7 @@ import UIKit
 
 class QuizController: UIViewController {
     
+    @IBOutlet weak var mainLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

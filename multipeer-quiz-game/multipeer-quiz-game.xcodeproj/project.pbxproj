@@ -56,13 +56,13 @@
 		B0520DED1EA92AE400FF11D6 /* multipeer-quiz-game */ = {
 			isa = PBXGroup;
 			children = (
+				B0520DF21EA92AE400FF11D6 /* Main.storyboard */,
 				B0520DEE1EA92AE400FF11D6 /* AppDelegate.swift */,
 				B0520DF01EA92AE400FF11D6 /* ViewController.swift */,
-				B0520DF21EA92AE400FF11D6 /* Main.storyboard */,
-				B0520DF51EA92AE400FF11D6 /* Assets.xcassets */,
-				B0520DF71EA92AE400FF11D6 /* LaunchScreen.storyboard */,
 				B0520E001EA92BDF00FF11D6 /* QuizController.swift */,
 				B0520DFA1EA92AE400FF11D6 /* Info.plist */,
+				B0520DF51EA92AE400FF11D6 /* Assets.xcassets */,
+				B0520DF71EA92AE400FF11D6 /* LaunchScreen.storyboard */,
 			);
 			path = "multipeer-quiz-game";
 			sourceTree = "<group>";
@@ -304,6 +304,7 @@
 				B0520DFF1EA92AE400FF11D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
