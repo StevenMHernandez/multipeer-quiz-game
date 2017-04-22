@@ -13,6 +13,14 @@
 		B0520DF61EA92AE400FF11D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0520DF51EA92AE400FF11D6 /* Assets.xcassets */; };
 		B0520DF91EA92AE400FF11D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0520DF71EA92AE400FF11D6 /* LaunchScreen.storyboard */; };
 		B0520E011EA92BDF00FF11D6 /* QuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0520E001EA92BDF00FF11D6 /* QuizController.swift */; };
+		B0FF7BAC1EAB867E0060113A /* MultiPlayerGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BAB1EAB867E0060113A /* MultiPlayerGame.swift */; };
+		B0FF7BAE1EAB86CB0060113A /* GenericGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BAD1EAB86CB0060113A /* GenericGame.swift */; };
+		B0FF7BB11EAB87240060113A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BB01EAB87240060113A /* Player.swift */; };
+		B0FF7BB31EAB8B500060113A /* JsonQuizLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BB21EAB8B500060113A /* JsonQuizLoader.swift */; };
+		B0FF7BB51EAB8B990060113A /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BB41EAB8B990060113A /* Question.swift */; };
+		B0FF7BB91EAB93B30060113A /* QuestionTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BB81EAB93B30060113A /* QuestionTimer.swift */; };
+		B0FF7BBB1EAB9A1D0060113A /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BBA1EAB9A1D0060113A /* Quiz.swift */; };
+		B0FF7BBD1EAB9E6F0060113A /* SinglePlayerGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF7BBC1EAB9E6F0060113A /* SinglePlayerGame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +32,14 @@
 		B0520DF81EA92AE400FF11D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B0520DFA1EA92AE400FF11D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B0520E001EA92BDF00FF11D6 /* QuizController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizController.swift; sourceTree = "<group>"; };
+		B0FF7BAB1EAB867E0060113A /* MultiPlayerGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiPlayerGame.swift; sourceTree = "<group>"; };
+		B0FF7BAD1EAB86CB0060113A /* GenericGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericGame.swift; sourceTree = "<group>"; };
+		B0FF7BB01EAB87240060113A /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Models/Player.swift; sourceTree = "<group>"; };
+		B0FF7BB21EAB8B500060113A /* JsonQuizLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JsonQuizLoader.swift; path = Services/JsonQuizLoader.swift; sourceTree = "<group>"; };
+		B0FF7BB41EAB8B990060113A /* Question.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Question.swift; path = Models/Question.swift; sourceTree = "<group>"; };
+		B0FF7BB81EAB93B30060113A /* QuestionTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionTimer.swift; path = Services/QuestionTimer.swift; sourceTree = "<group>"; };
+		B0FF7BBA1EAB9A1D0060113A /* Quiz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Quiz.swift; path = Models/Quiz.swift; sourceTree = "<group>"; };
+		B0FF7BBC1EAB9E6F0060113A /* SinglePlayerGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SinglePlayerGame.swift; path = Services/SinglePlayerGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +72,8 @@
 		B0520DED1EA92AE400FF11D6 /* multipeer-quiz-game */ = {
 			isa = PBXGroup;
 			children = (
+				B0FF7BAF1EAB870F0060113A /* Models */,
+				B0FF7BAA1EAB863A0060113A /* Services */,
 				B0520DF21EA92AE400FF11D6 /* Main.storyboard */,
 				B0520DEE1EA92AE400FF11D6 /* AppDelegate.swift */,
 				B0520DF01EA92AE400FF11D6 /* ViewController.swift */,
@@ -65,6 +83,28 @@
 				B0520DF71EA92AE400FF11D6 /* LaunchScreen.storyboard */,
 			);
 			path = "multipeer-quiz-game";
+			sourceTree = "<group>";
+		};
+		B0FF7BAA1EAB863A0060113A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF7BAB1EAB867E0060113A /* MultiPlayerGame.swift */,
+				B0FF7BAD1EAB86CB0060113A /* GenericGame.swift */,
+				B0FF7BB21EAB8B500060113A /* JsonQuizLoader.swift */,
+				B0FF7BB81EAB93B30060113A /* QuestionTimer.swift */,
+				B0FF7BBC1EAB9E6F0060113A /* SinglePlayerGame.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		B0FF7BAF1EAB870F0060113A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF7BB01EAB87240060113A /* Player.swift */,
+				B0FF7BB41EAB8B990060113A /* Question.swift */,
+				B0FF7BBA1EAB9A1D0060113A /* Quiz.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,9 +180,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0FF7BAE1EAB86CB0060113A /* GenericGame.swift in Sources */,
+				B0FF7BB51EAB8B990060113A /* Question.swift in Sources */,
 				B0520DF11EA92AE400FF11D6 /* ViewController.swift in Sources */,
+				B0FF7BB31EAB8B500060113A /* JsonQuizLoader.swift in Sources */,
 				B0520DEF1EA92AE400FF11D6 /* AppDelegate.swift in Sources */,
+				B0FF7BAC1EAB867E0060113A /* MultiPlayerGame.swift in Sources */,
+				B0FF7BBB1EAB9A1D0060113A /* Quiz.swift in Sources */,
+				B0FF7BB91EAB93B30060113A /* QuestionTimer.swift in Sources */,
+				B0FF7BB11EAB87240060113A /* Player.swift in Sources */,
 				B0520E011EA92BDF00FF11D6 /* QuizController.swift in Sources */,
+				B0FF7BBD1EAB9E6F0060113A /* SinglePlayerGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

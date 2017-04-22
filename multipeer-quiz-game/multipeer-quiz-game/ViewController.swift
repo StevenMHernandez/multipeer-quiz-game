@@ -1,18 +1,12 @@
-//
-//  ViewController.swift
-//  multipeer-quiz-game
-//
-//  Created by Steven Hernandez on 4/20/17.
-//  Copyright © 2017 Steven Hernandez. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
     
     @IBOutlet weak var segmentedControlForPlayer: UISegmentedControl!
     @IBOutlet weak var startGameButton: UIButton!
-    var numPlayers = Int()
+    
+    var numPlayers = Int(0)
+    
     @IBAction func segmentedControlUpdated(_ sender: Any) {
         switch self.segmentedControlForPlayer.selectedSegmentIndex
         {

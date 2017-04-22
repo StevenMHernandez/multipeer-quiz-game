@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  multipeer-quiz-game
-//
-//  Created by Steven Hernandez on 4/20/17.
-//  Copyright © 2017 Steven Hernandez. All rights reserved.
-//
-
 import UIKit
 
 @UIApplicationMain
