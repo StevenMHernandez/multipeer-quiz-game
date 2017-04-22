@@ -25,11 +25,11 @@ class QuestionTimer {
         
         if self.timeRemaining == 0 {
             self.stop()
-            self.timeEndedCallback!()
         }
     }
     
     func stop() {
         self.timer?.invalidate()
+        self.timeEndedCallback!()
     }
 }

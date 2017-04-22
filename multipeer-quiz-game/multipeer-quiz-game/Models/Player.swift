@@ -14,6 +14,8 @@ class Player {
     
     var score = 0
     
+    var selectedAnswer = ""
+    
     init(peerId: Int, shortname: String) {
         self.peerId = peerId
         self.shortname = shortname
@@ -26,5 +28,9 @@ class Player {
         self.peerId = peerId
         self.shortname = shortname
         self.image = image
+    }
+    
+    func awardPoints() {
+        self.score += 10
     }
 }

@@ -3,13 +3,12 @@ import Foundation
 
 class SinglePlayerGame: GenericGame {
     var players = [Player]()
-    var currentPlayer: Player
     var timer = QuestionTimer()
     var jsonQuizLoader = JsonQuizLoader()
     var quiz: Quiz?
     
     init(currentPlayer: Player) {
-        self.currentPlayer = currentPlayer
+        self.players.append(currentPlayer)
     }
     
     func canStartGame() -> Bool {
@@ -19,9 +18,10 @@ class SinglePlayerGame: GenericGame {
     }
     
     func submitSelection(_ choice: String) {
-        // TODO: if `self.checkAnswer(choice: choice)`, add points to score
+        if self.checkAnswer(choice: choice) {
+            self.players[0].awardPoints()
+        }
         
         self.timer.stop()
-        self.timer.timeEndedCallback!()
     }
 }
