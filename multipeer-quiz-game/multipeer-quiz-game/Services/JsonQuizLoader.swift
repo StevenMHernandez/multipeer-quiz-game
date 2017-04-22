@@ -36,7 +36,7 @@ class JsonQuizLoader {
         options2["B"] = "London"
         options2["C"] = "Rome"
         options2["D"] = "New York"
-        questions.append(Question(number: 2, question: "What is the capital of USA?", options: options2, correctOption: "A"))
+        questions.append(Question(number: 2, question: "Which option says London?", options: options2, correctOption: "B"))
         // End of hardcoded quiz values
         
         

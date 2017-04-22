@@ -12,10 +12,12 @@ class Quiz {
     }
     
     func getNextQuestion() -> Question? {
-        // TODO: increment currentQuestion
-        // if question[currentQuestion] doesn't exist, return nil otherwise return the next question
+        self.currentQuestion += 1
         
-        // TODO: return question
-        return nil
+        if (self.questions.count <= self.currentQuestion) {
+            return nil
+        }
+        
+        return self.questions[self.currentQuestion]
     }
 }
