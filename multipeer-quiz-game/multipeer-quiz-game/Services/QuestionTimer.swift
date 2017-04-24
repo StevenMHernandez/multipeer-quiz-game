@@ -22,6 +22,7 @@ class QuestionTimer {
         self.timeRemaining -= 1
         
         self.renderTimerCallback!(self.timeRemaining)
+        //figure out why this is running twice
         
         if self.timeRemaining == 0 {
             self.stop()

@@ -14,10 +14,76 @@ class QuizController: UIViewController {
     
     var selectedOption: String?
     
-    @IBOutlet weak var mainLabel: UILabel!
+    var players = [Player]()
     
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var restartQuizButton: UIButton!
+    @IBOutlet weak var QuestionLabel: UILabel!
+    @IBOutlet weak var answerALabel: UILabel!
+    @IBOutlet weak var answerBLabel: UILabel!
+    @IBOutlet weak var answerCLabel: UILabel!
+    @IBOutlet weak var answerDLabel: UILabel!
+    @IBOutlet weak var answerAView: UIView!
+    @IBOutlet weak var answerBView: UIView!
+    @IBOutlet weak var answerCView: UIView!
+    @IBOutlet weak var answerDView: UIView!
+    @IBOutlet weak var player1Score: UILabel!
+    @IBOutlet weak var player2Score: UILabel!
+    @IBOutlet weak var player3Score: UILabel!
+    @IBOutlet weak var player4Score: UILabel!
+    @IBOutlet weak var submitButton: UIButton!
+    var answerABool = false
+    var answerBBool = false
+    var answerCBool = false
+    var answerDBool = false
+    
+  
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first{
+            if touch.view == self.answerALabel {
+                answerAView.backgroundColor = UIColor.yellow
+                answerBView.backgroundColor = UIColor.lightGray
+                answerCView.backgroundColor = UIColor.lightGray
+                answerDView.backgroundColor = UIColor.lightGray
+                answerABool = true; answerBBool = false
+                answerCBool = false; answerDBool = false
+                selectedOption = answerALabel.text
+            } else if touch.view == self.answerBLabel {
+                answerAView.backgroundColor = UIColor.lightGray
+                answerBView.backgroundColor = UIColor.yellow
+                answerCView.backgroundColor = UIColor.lightGray
+                answerDView.backgroundColor = UIColor.lightGray
+                answerABool = false; answerBBool = true
+                answerCBool = false;  answerDBool = false
+                selectedOption = answerBLabel.text
+            } else if touch.view == self.answerCLabel {
+                answerAView.backgroundColor = UIColor.lightGray
+                answerBView.backgroundColor = UIColor.lightGray
+                answerCView.backgroundColor = UIColor.yellow
+                answerDView.backgroundColor = UIColor.lightGray
+                answerABool = false; answerBBool = false
+                answerCBool = true; answerDBool = false
+                selectedOption = answerCLabel.text
+            } else if touch.view == self.answerDLabel {
+                answerAView.backgroundColor = UIColor.lightGray
+                answerBView.backgroundColor = UIColor.lightGray
+                answerCView.backgroundColor = UIColor.lightGray
+                answerDView.backgroundColor = UIColor.yellow
+                answerABool = false; answerBBool = false
+                answerCBool = false; answerDBool = true
+                selectedOption = answerDLabel.text
+            } else{
+                print("touch Registered")
+                return
+            }
+            
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "General"
         
         // TODO: remove this line
         // it should be sent over from the previous ViewController
@@ -34,22 +100,27 @@ class QuizController: UIViewController {
         let question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
         
         // TODO: if question is `nil`, that means there are no more questions for this quiz
-            // TODO: notify user with `You Win`, `You Lose`, etc.
-            // TODO: if user clicks `restart`, run this: `game?.loadNewQuiz()` and reload the interface
+        // TODO: notify user with `You Win`, `You Lose`, etc.
+        // TODO: if user clicks `restart`, run this: `game?.loadNewQuiz()` and reload the interface
         // else, there are questions, so:
-            // TODO: render question and choice boxes
+        // TODO: render question and choice boxes
         
-                // player is allowed to click their choice
-                // after clicking, they can tilt their phone to change their selection
-                // or shake to pick something random
+        // player is allowed to click their choice
+        // after clicking, they can tilt their phone to change their selection
+        // or shake to pick something random
         
-                // Submit happens by acceleration in the `z` direction
-                // or yaw in each direction
+        // Submit happens by acceleration in the `z` direction
+        // or yaw in each direction
     }
     
     func renderTimer(timeRemaining: Int) {
         // TODO: render timer
-        print(timeRemaining)
+        timerLabel.text = String(timeRemaining)
+        if(timeRemaining < 6){ timerLabel.textColor = UIColor.red}
+        else{ timerLabel.textColor = UIColor.black}
+        
+        //figure out a better way to do this because when next question appears this will appear as time remaining will reach 0 for every question
+        if(timeRemaining <= 0){ restartQuizButton.isHidden = false}
     }
     
     func questionTimerEnded() {
@@ -62,13 +133,17 @@ class QuizController: UIViewController {
         self.nextQuestion()
     }
     
-    func submitSelection() {
+    @IBAction func submitSelection(_ sender: Any) {
         // TODO: only submit if something was selected
+        if(answerABool || answerBBool || answerCBool || answerDBool){
         game?.submitSelection(self.selectedOption!)
+        }
+        
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func restartQuizAction(_ sender: Any) {
+        //TODO: Start quiz over when pressed
+        game?.loadNewQuiz()
     }
 }
