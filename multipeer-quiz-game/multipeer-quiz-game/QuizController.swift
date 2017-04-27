@@ -1,4 +1,5 @@
 import UIKit
+import MultipeerConnectivity
 
 class QuizController: UIViewController {
     
@@ -11,7 +12,7 @@ class QuizController: UIViewController {
      * we let this object handle that logic itself
      */
     
-    var game: SinglePlayerGame?
+    var game: GenericGame?
     
     var selectedOption: String?
     var jsonQuiz = JsonQuizLoader()
@@ -90,7 +91,7 @@ class QuizController: UIViewController {
         // TODO: remove this line
         // it should be sent over from the previous ViewController
         // it could either be SinglePlayerGame or MultiplayerGame
-        self.game = SinglePlayerGame(currentPlayer: Player(peerId: 123456789, shortname: "User1"))
+        self.game = SinglePlayerGame(currentPlayer: Player(peerId: MCPeerID(displayName: "displayName")))
         
         jsonQuiz.getJSONData()
         game?.loadNewQuiz()

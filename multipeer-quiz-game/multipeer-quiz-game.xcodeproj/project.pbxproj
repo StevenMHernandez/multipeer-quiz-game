@@ -142,7 +142,7 @@
 				TargetAttributes = {
 					B0520DEA1EA92AE300FF11D6 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8B4QBLLSCD;
+						DevelopmentTeam = 7WUSKY23L2;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -315,7 +315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8B4QBLLSCD;
+				DEVELOPMENT_TEAM = 7WUSKY23L2;
 				INFOPLIST_FILE = "multipeer-quiz-game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.stevenHdesigns.multipeer-quiz-game";
@@ -328,7 +328,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8B4QBLLSCD;
+				DEVELOPMENT_TEAM = 7WUSKY23L2;
 				INFOPLIST_FILE = "multipeer-quiz-game/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.stevenHdesigns.multipeer-quiz-game";

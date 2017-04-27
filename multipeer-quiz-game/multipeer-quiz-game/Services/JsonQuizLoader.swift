@@ -81,9 +81,9 @@ class JsonQuizLoader {
                     
                     if let dictionary = json as? [String:Any]{
                         let topic = dictionary["topic"]
-                        let questions: [String:Any] = dictionary["questions"] as! [String : Any]
+                        let questions = dictionary["questions"] as! [Any]
                         questions.forEach({ (question) in
-                            let q: [String:Any] = questions 
+                            let q: [String:Any] = question as! [String : Any]
                             let number = q["number"] as! Int
                             let question = q["questionSentence"] as! String
                             let answer = q["correctOption"] as! String

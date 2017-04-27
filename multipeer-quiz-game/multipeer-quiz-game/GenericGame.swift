@@ -2,19 +2,19 @@ import Foundation
 
 // Think of this as an `abstract` class
 
-// Protocols show the attributes for the class
+// Protocols show the attributes and method for the class that must be set
 protocol GenericGame {
     var players: [Player] {get set}
     var timer: QuestionTimer {get set}
     var jsonQuizLoader: JsonQuizLoader {get}
     var quiz: Quiz? {get set}
+    func canStartGame() -> Bool
+    func submitSelection(_ choice: String)
 }
 
-// Extensions show the functions that the child class can extend
+// Extensions show the base methods (not extended)
 extension GenericGame {
-    
-    func canStartGame() -> Bool { return false }
-    
+
     mutating func loadNewQuiz() {
         self.quiz = self.jsonQuizLoader.loadNextQuiz()
         
@@ -31,10 +31,8 @@ extension GenericGame {
         return question
     }
     
-    func submitSelection(_ choice: String) {print("hi") }
-    
     func checkAnswer(choice: String) -> Bool {
         return choice == self.quiz?.questions[(self.quiz?.currentQuestion)!].correctOption
     }
-    
+
 }
