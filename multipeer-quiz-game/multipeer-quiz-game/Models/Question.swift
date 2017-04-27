@@ -15,6 +15,11 @@ class Question {
     
     func checkSelection(_ choice: String) -> Bool {
         // TODO: check if the chioce is correct
-        return false
+        if(choice == correctOption){
+            return true
+        }
+        else{
+            return false
+        }
     }
 }

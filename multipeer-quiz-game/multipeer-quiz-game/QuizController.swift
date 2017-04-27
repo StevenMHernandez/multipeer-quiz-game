@@ -13,9 +13,10 @@ class QuizController: UIViewController {
     var game: GenericGame?
     
     var selectedOption: String?
-    
-    var players = [Player]()
-    
+    var jsonQuiz = JsonQuizLoader()
+    var players: [Player]!
+    var question: Question! = nil
+    var numPlayers: Int!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var restartQuizButton: UIButton!
     @IBOutlet weak var QuestionLabel: UILabel!
@@ -90,19 +91,37 @@ class QuizController: UIViewController {
         // it could either be SinglePlayerGame or MultiplayerGame
         self.game = SinglePlayerGame(currentPlayer: Player(peerId: 123456789, shortname: "User1"))
         
+        jsonQuiz.getJSONData()
         game?.loadNewQuiz()
+        
         
         // Load first Question:
         self.nextQuestion()
     }
     
     func nextQuestion() {
-        let question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
+        question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
+        QuestionLabel.text = question?.question
+        answerALabel.text = question?.options["A"]
+        answerBLabel.text = question?.options["B"]
+        answerCLabel.text = question?.options["C"]
+        answerDLabel.text = question?.options["D"]
         
+        if(question == nil){
+            restartQuizButton.isHidden = false
+            timerLabel.textColor = UIColor.black
+            timerLabel.text = "Your Score: \(players)"
+        }
+        
+        //********************
+        //done
         // TODO: if question is `nil`, that means there are no more questions for this quiz
         // TODO: notify user with `You Win`, `You Lose`, etc.
         // TODO: if user clicks `restart`, run this: `game?.loadNewQuiz()` and reload the interface
         // else, there are questions, so:
+        //********************
+        
+        
         // TODO: render question and choice boxes
         
         // player is allowed to click their choice
@@ -119,8 +138,6 @@ class QuizController: UIViewController {
         if(timeRemaining < 6){ timerLabel.textColor = UIColor.red}
         else{ timerLabel.textColor = UIColor.black}
         
-        //figure out a better way to do this because when next question appears this will appear as time remaining will reach 0 for every question
-        if(timeRemaining <= 0){ restartQuizButton.isHidden = false}
     }
     
     func questionTimerEnded() {
@@ -129,14 +146,31 @@ class QuizController: UIViewController {
         
         // show correct answer
         // wait `n` seconds before continuing
-        
+        let selection = question.checkSelection(selectedOption!)
+        if(selection){
+            print("question timer ended")
+        }
         self.nextQuestion()
     }
     
     @IBAction func submitSelection(_ sender: Any) {
         // TODO: only submit if something was selected
         if(answerABool || answerBBool || answerCBool || answerDBool){
-        game?.submitSelection(self.selectedOption!)
+            let selection = question.checkSelection(selectedOption!)
+            if(selection){
+                //check logic for this how to stop question and how to prevent multiple answers
+                print("correct answer")
+                timerLabel.text = "Correct"
+                submitButton.isHidden = true
+            }
+            else{
+                timerLabel.text = "incorrect"
+                submitButton.isHidden = true
+            }
+            // If question is answered when there is less than 3 seconds next question appears for only a few seconds and then it goes to next question
+            Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
+            
+            
         }
         
     }
