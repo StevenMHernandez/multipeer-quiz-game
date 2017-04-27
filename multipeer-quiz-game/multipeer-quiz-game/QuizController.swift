@@ -88,11 +88,6 @@ class QuizController: UIViewController {
         super.viewDidLoad()
         title = "General"
         
-        // TODO: remove this line
-        // it should be sent over from the previous ViewController
-        // it could either be SinglePlayerGame or MultiplayerGame
-        self.game = SinglePlayerGame(currentPlayer: Player(peerId: MCPeerID(displayName: "displayName")))
-        
         jsonQuiz.getJSONData()
         game?.loadNewQuiz()
         

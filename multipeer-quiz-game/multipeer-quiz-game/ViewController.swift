@@ -12,34 +12,34 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     @IBOutlet weak var segmentedControlForPlayer: UISegmentedControl!
     @IBOutlet weak var startGameButton: UIButton!
 
-    var numPlayers = Int(0)
+    var multiplayer = false
 
     @IBAction func segmentedControlUpdated(_ sender: Any) {
-        switch self.segmentedControlForPlayer.selectedSegmentIndex
-        {
+        switch self.segmentedControlForPlayer.selectedSegmentIndex {
         case 0:
-            numPlayers = 0
-
+            self.multiplayer = false
         case 1:
-            numPlayers = 1
+            self.multiplayer = true
         default:
             break;
         }
     }
 
     @IBAction func buttonPress(_ sender: Any) {
-        if(numPlayers == 0){
+        if (!multiplayer){
             performSegue(withIdentifier: "toQuiz", sender: self)
-        }
-        else{
-            let alert = UIAlertController(title: "Error", message: "Not enough People", preferredStyle: .alert)
+        } else {
+            if (self.multiplayerGame?.canStartGame())! {
+                performSegue(withIdentifier: "toQuiz", sender: self)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Not enough People", preferredStyle: .alert)
 
-            let myAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                let myAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-            alert.addAction(myAction)
+                alert.addAction(myAction)
 
-            present(alert, animated: true, completion: nil)
-
+                present(alert, animated: true, completion: nil)
+            }
         }
 
     }
@@ -92,7 +92,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
 
     }
-    
+
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case MCSessionState.connected:
@@ -105,7 +105,9 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
 
         case MCSessionState.notConnected:
             // remove disconnected players
-            self.multiplayerGame?.players.remove(at: self.getPlayerIndex(by: peerID))
+            if self.getPlayerIndex(by: peerID) > 0 {
+                self.multiplayerGame?.players.remove(at: self.getPlayerIndex(by: peerID))
+            }
         }
     }
 
@@ -123,8 +125,8 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     //**********************************************************
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         let quizViewController = segue.destination as! QuizController
-            quizViewController.numPlayers = self.numPlayers
+        let quizViewController = segue.destination as! QuizController
+        quizViewController.game = self.multiplayer ? self.multiplayerGame : self.singlePlayerGame
     }
 
     override func didReceiveMemoryWarning() {
