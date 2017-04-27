@@ -66,7 +66,7 @@ class JsonQuizLoader {
     //professors code tweaked around
     //TODO Find how to get information from dictionary into quiz
     func getJSONData(){
-        
+        //var quiz: Quiz
         let urlString = "http://www.people.vcu.edu/~ebulut/jsonFiles/quiz2.json"
         let url = URL(string: urlString)
         
@@ -80,7 +80,22 @@ class JsonQuizLoader {
                     let json = try JSONSerialization.jsonObject(with: result, options: .allowFragments)
                     
                     if let dictionary = json as? [String:Any]{
-                        print(dictionary)
+                        let topic = dictionary["topic"]
+                        let questions: [String:Any] = dictionary["questions"] as! [String : Any]
+                        questions.forEach({ (question) in
+                            let q: [String:Any] = questions 
+                            let number = q["number"] as! Int
+                            let question = q["questionSentence"] as! String
+                            let answer = q["correctOption"] as! String
+                            let options = q["options"]  as! [String:Any]
+                            options.forEach({ (option) in //change to map
+                                let answers: [String: String] = options as! [String : String]
+                             
+                            })
+                        })
+                     
+                        
+                        
                     }
                 }
                 catch{

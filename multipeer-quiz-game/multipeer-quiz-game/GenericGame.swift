@@ -31,7 +31,7 @@ extension GenericGame {
         return question
     }
     
-    func submitSelection(_ choice: String) { }
+    func submitSelection(_ choice: String) {print("hi") }
     
     func checkAnswer(choice: String) -> Bool {
         return choice == self.quiz?.questions[(self.quiz?.currentQuestion)!].correctOption

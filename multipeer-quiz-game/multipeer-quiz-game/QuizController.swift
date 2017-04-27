@@ -10,7 +10,8 @@ class QuizController: UIViewController {
      * we don't worry about how we handle single vs multiplayer games
      * we let this object handle that logic itself
      */
-    var game: GenericGame?
+    
+    var game: SinglePlayerGame?
     
     var selectedOption: String?
     var jsonQuiz = JsonQuizLoader()
@@ -38,7 +39,7 @@ class QuizController: UIViewController {
     var answerCBool = false
     var answerDBool = false
     
-  
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -100,6 +101,7 @@ class QuizController: UIViewController {
     }
     
     func nextQuestion() {
+        submitButton.isHidden = false
         question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
         QuestionLabel.text = question?.question
         answerALabel.text = question?.options["A"]
@@ -146,31 +148,29 @@ class QuizController: UIViewController {
         
         // show correct answer
         // wait `n` seconds before continuing
-        let selection = question.checkSelection(selectedOption!)
-        if(selection){
-            print("question timer ended")
+        
+        
+        
+        
+        if(selectedOption != nil && question.checkSelection(selectedOption!)){
+            
+            print("correct answer")
+            timerLabel.text = "Correct"
+            submitButton.isHidden = true
         }
-        self.nextQuestion()
+        else{
+            timerLabel.text = "incorrect"
+            submitButton.isHidden = true
+        }
+        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
+        //self.nextQuestion()
     }
     
     @IBAction func submitSelection(_ sender: Any) {
         // TODO: only submit if something was selected
         if(answerABool || answerBBool || answerCBool || answerDBool){
-            let selection = question.checkSelection(selectedOption!)
-            if(selection){
-                //check logic for this how to stop question and how to prevent multiple answers
-                print("correct answer")
-                timerLabel.text = "Correct"
-                submitButton.isHidden = true
-            }
-            else{
-                timerLabel.text = "incorrect"
-                submitButton.isHidden = true
-            }
-            // If question is answered when there is less than 3 seconds next question appears for only a few seconds and then it goes to next question
-            Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
-            
-            
+            game?.submitSelection(selectedOption!)
+            print("hello")
         }
         
     }
