@@ -1,8 +1,7 @@
 import UIKit
 import MultipeerConnectivity
 
-class QuizController: UIViewController {
-    
+class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessionDelegate {
     /*
      * This could either be a multiplayer or singleplayer quiz.
      * but because we don't care which it is in this controller
@@ -11,9 +10,11 @@ class QuizController: UIViewController {
      * we don't worry about how we handle single vs multiplayer games
      * we let this object handle that logic itself
      */
-    
     var game: GenericGame?
-    
+
+    var session: MCSession!
+    var browser: MCBrowserViewController!
+
     var selectedOption: String?
     var jsonQuiz = JsonQuizLoader()
     var players: [Player]!
@@ -108,7 +109,7 @@ class QuizController: UIViewController {
         if(question == nil){
             restartQuizButton.isHidden = false
             timerLabel.textColor = UIColor.black
-            timerLabel.text = "Your Score: \(players)"
+            timerLabel.text = "Your Score: \((self.game?.players[0].score)!)"
         }
         
         //********************
@@ -139,8 +140,7 @@ class QuizController: UIViewController {
     }
     
     func questionTimerEnded() {
-        // check if answer is correct
-        // add points if so
+        game?.awardPointsToPlayers()
         
         // show correct answer
         // wait `n` seconds before continuing
@@ -166,14 +166,54 @@ class QuizController: UIViewController {
         // TODO: only submit if something was selected
         if(answerABool || answerBBool || answerCBool || answerDBool){
             game?.submitSelection(selectedOption!)
-            print("hello")
         }
-        
     }
-    
-    
+
     @IBAction func restartQuizAction(_ sender: Any) {
         //TODO: Start quiz over when pressed
         game?.loadNewQuiz()
     }
+
+    func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
+    }
+
+    func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
+    }
+
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+    }
+
+    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        // this needs to be run on the main thread
+        DispatchQueue.main.async(execute: {
+            let playerIndex = (self.game?.getPlayerIndex(by:peerID))!
+            if let receivedString = NSKeyedUnarchiver.unarchiveObject(with: data) as? String {
+                switch receivedString {
+                case "NEW_GAME":
+                    print("TODO: start a new game")
+                case "A":
+                    self.game?.players[playerIndex].selectedAnswer = "A"
+                case "B":
+                    self.game?.players[playerIndex].selectedAnswer = "B"
+                case "C":
+                    self.game?.players[playerIndex].selectedAnswer = "C"
+                case "D":
+                    self.game?.players[playerIndex].selectedAnswer = "D"
+                default:
+                    print("I can't handle all this input! Got:", receivedString)
+                    break;
+                }
+            }
+        })
+    }
+
+    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+    }
+
+    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+    }
+
+    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL, withError error: Error?) {
+    }
+
 }

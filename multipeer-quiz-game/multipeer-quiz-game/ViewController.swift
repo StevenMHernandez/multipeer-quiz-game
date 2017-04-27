@@ -1,5 +1,6 @@
 import UIKit
 import MultipeerConnectivity
+
 class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessionDelegate {
     var singlePlayerGame: SinglePlayerGame?
     var multiplayerGame: MultiPlayerGame?
@@ -30,6 +31,14 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             performSegue(withIdentifier: "toQuiz", sender: self)
         } else {
             if (self.multiplayerGame?.canStartGame())! {
+                do{
+                    let data =  NSKeyedArchiver.archivedData(withRootObject: "START")
+                    try session.send(data, toPeers: session.connectedPeers, with: .unreliable)
+                }
+                catch let err {
+                    //print("Error in sending data \(err)")
+                }
+
                 performSegue(withIdentifier: "toQuiz", sender: self)
             } else {
                 let alert = UIAlertController(title: "Error", message: "Not enough People", preferredStyle: .alert)
@@ -59,6 +68,11 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         self.singlePlayerGame = SinglePlayerGame(currentPlayer: Player(peerId: self.peerID))
         self.multiplayerGame = MultiPlayerGame(currentPlayer: Player(peerId: self.peerID))
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        session.delegate = self
+        browser.delegate = self
+    }
 
     @IBAction func connectToDevice(_ sender: Any) {
         present(browser, animated: true, completion: nil)
@@ -82,7 +96,19 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-
+        // this needs to be run on the main thread
+        DispatchQueue.main.async(execute: {
+            if let receivedString = NSKeyedUnarchiver.unarchiveObject(with: data) as? String {
+                switch receivedString {
+                    case "START":
+                        self.multiplayer = true
+                        self.performSegue(withIdentifier: "toQuiz", sender: self)
+                    default:
+                        print("I can't handle all this input! Got:", receivedString)
+                        break;
+                }
+            }
+        })
     }
 
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
@@ -105,20 +131,11 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
 
         case MCSessionState.notConnected:
             // remove disconnected players
-            if self.getPlayerIndex(by: peerID) > 0 {
-                self.multiplayerGame?.players.remove(at: self.getPlayerIndex(by: peerID))
+            let playerIndex = (self.multiplayerGame?.getPlayerIndex(by: peerID))!
+            if playerIndex > 0 {
+                self.multiplayerGame?.players.remove(at: playerIndex)
             }
         }
-    }
-
-    func getPlayerIndex(by peerID: MCPeerID) -> Int {
-        for (index, player) in (self.multiplayerGame?.players.enumerated())! {
-            if (player.peerId == peerID) {
-                return index
-            }
-        }
-
-        return -1
     }
 
     //**********************************************************
@@ -127,6 +144,12 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let quizViewController = segue.destination as! QuizController
         quizViewController.game = self.multiplayer ? self.multiplayerGame : self.singlePlayerGame
+
+        session.delegate = quizViewController
+        browser.delegate = quizViewController
+
+        quizViewController.session = self.session
+        quizViewController.browser = self.browser
     }
 
     override func didReceiveMemoryWarning() {

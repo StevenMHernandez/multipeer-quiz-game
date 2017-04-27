@@ -1,4 +1,5 @@
 import Foundation
+import MultipeerConnectivity
 
 // Think of this as an `abstract` class
 
@@ -10,6 +11,7 @@ protocol GenericGame {
     var quiz: Quiz? {get set}
     func canStartGame() -> Bool
     func submitSelection(_ choice: String)
+    func awardPointsToPlayers()
 }
 
 // Extensions show the base methods (not extended)
@@ -33,6 +35,16 @@ extension GenericGame {
     
     func checkAnswer(choice: String) -> Bool {
         return choice == self.quiz?.questions[(self.quiz?.currentQuestion)!].correctOption
+    }
+
+    func getPlayerIndex(by peerID: MCPeerID) -> Int {
+        for (index, player) in self.players.enumerated() {
+            if (player.peerId == peerID) {
+                return index
+            }
+        }
+
+        return -1
     }
 
 }

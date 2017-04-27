@@ -14,7 +14,9 @@ class QuestionTimer {
         self.timeRemaining = 20
         
         self.renderTimerCallback!(self.timeRemaining)
-        
+
+        // remove old timer just incase
+        self.timer?.invalidate()
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(QuestionTimer.decrementTimeRemaining), userInfo: nil, repeats: true)
     }
     

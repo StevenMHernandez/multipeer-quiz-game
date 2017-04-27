@@ -18,10 +18,13 @@ class SinglePlayerGame: GenericGame {
     }
     
     func submitSelection(_ choice: String) {
-        if self.checkAnswer(choice: choice) {
+        self.players[0].selectedAnswer = choice
+        self.timer.stop()
+    }
+    
+    func awardPointsToPlayers() {
+        if self.checkAnswer(choice: self.players[0].selectedAnswer) {
             self.players[0].awardPoints()
         }
-        
-        self.timer.stop()
     }
 }
