@@ -12,6 +12,7 @@ protocol GenericGame {
     func canStartGame() -> Bool
     func submitSelection(_ choice: String)
     func awardPointsToPlayers()
+    func setPlayerSelectedAnswer(playerIndex: Int, answer: String)
 }
 
 // Extensions show the base methods (not extended)

@@ -85,16 +85,25 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "General"
+        title = "The Game."
+        
+        session.delegate = self
+        browser.delegate = self
         
         jsonQuiz.getJSONData()
         game?.loadNewQuiz()
         
-        
         // Load first Question:
         self.nextQuestion()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        session.delegate = self
+        browser.delegate = self
     }
     
     func nextQuestion() {
@@ -111,18 +120,6 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             timerLabel.textColor = UIColor.black
             timerLabel.text = "Your Score: \((self.game?.players[0].score)!)"
         }
-        
-        //********************
-        //done
-        // TODO: if question is `nil`, that means there are no more questions for this quiz
-        // TODO: notify user with `You Win`, `You Lose`, etc.
-        // TODO: if user clicks `restart`, run this: `game?.loadNewQuiz()` and reload the interface
-        // else, there are questions, so:
-        //********************
-        
-        
-        // TODO: render question and choice boxes
-        
         // player is allowed to click their choice
         // after clicking, they can tilt their phone to change their selection
         // or shake to pick something random
@@ -142,14 +139,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     func questionTimerEnded() {
         game?.awardPointsToPlayers()
         
-        // show correct answer
-        // wait `n` seconds before continuing
-        
-        
-        
-        
         if(selectedOption != nil && question.checkSelection(selectedOption!)){
-            
             print("correct answer")
             timerLabel.text = "Correct"
             submitButton.isHidden = true
@@ -159,11 +149,9 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             submitButton.isHidden = true
         }
         Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
-        //self.nextQuestion()
     }
     
     @IBAction func submitSelection(_ sender: Any) {
-        // TODO: only submit if something was selected
         if(answerABool || answerBBool || answerCBool || answerDBool){
             game?.submitSelection(selectedOption!)
         }
@@ -191,17 +179,8 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 switch receivedString {
                 case "NEW_GAME":
                     print("TODO: start a new game")
-                case "A":
-                    self.game?.players[playerIndex].selectedAnswer = "A"
-                case "B":
-                    self.game?.players[playerIndex].selectedAnswer = "B"
-                case "C":
-                    self.game?.players[playerIndex].selectedAnswer = "C"
-                case "D":
-                    self.game?.players[playerIndex].selectedAnswer = "D"
                 default:
-                    print("I can't handle all this input! Got:", receivedString)
-                    break;
+                    self.game?.setPlayerSelectedAnswer(playerIndex: playerIndex, answer: receivedString)
                 }
             }
         })

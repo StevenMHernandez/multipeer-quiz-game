@@ -36,7 +36,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                     try session.send(data, toPeers: session.connectedPeers, with: .unreliable)
                 }
                 catch let err {
-                    //print("Error in sending data \(err)")
+                    print("Error in sending data \(err)")
                 }
 
                 performSegue(withIdentifier: "toQuiz", sender: self)
@@ -66,10 +66,11 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         browser.delegate = self
 
         self.singlePlayerGame = SinglePlayerGame(currentPlayer: Player(peerId: self.peerID))
-        self.multiplayerGame = MultiPlayerGame(currentPlayer: Player(peerId: self.peerID))
+        self.multiplayerGame = MultiPlayerGame(currentPlayer: Player(peerId: self.peerID), session: self.session)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         session.delegate = self
         browser.delegate = self
     }
@@ -144,9 +145,6 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let quizViewController = segue.destination as! QuizController
         quizViewController.game = self.multiplayer ? self.multiplayerGame : self.singlePlayerGame
-
-        session.delegate = quizViewController
-        browser.delegate = quizViewController
 
         quizViewController.session = self.session
         quizViewController.browser = self.browser

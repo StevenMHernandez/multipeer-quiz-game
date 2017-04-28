@@ -27,4 +27,8 @@ class SinglePlayerGame: GenericGame {
             self.players[0].awardPoints()
         }
     }
+    
+    func setPlayerSelectedAnswer(playerIndex: Int, answer: String) {
+        // single player, this does nothing
+    }
 }
