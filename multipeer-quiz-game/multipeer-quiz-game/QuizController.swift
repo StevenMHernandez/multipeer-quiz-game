@@ -93,6 +93,10 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         session.delegate = self
         browser.delegate = self
         
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(QuizController.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+        
         jsonQuiz.getJSONData()
         game?.loadNewQuiz()
         
@@ -104,6 +108,18 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         super.viewDidAppear(animated)
         session.delegate = self
         browser.delegate = self
+    }
+    
+    func back(sender: UIBarButtonItem) {
+        do{
+            let data =  NSKeyedArchiver.archivedData(withRootObject: "GO_BACK")
+            try self.session?.send(data, toPeers: (self.session?.connectedPeers)!, with: .unreliable)
+        }
+        catch let err {
+            print("Error in sending data \(err)")
+        }
+        
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func nextQuestion() {
@@ -148,7 +164,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             timerLabel.text = "incorrect"
             submitButton.isHidden = true
         }
-        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
     }
     
     @IBAction func submitSelection(_ sender: Any) {
@@ -179,6 +195,8 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 switch receivedString {
                 case "NEW_GAME":
                     print("TODO: start a new game")
+                case "GO_BACK":
+                    _ = self.navigationController?.popViewController(animated: true)
                 default:
                     self.game?.setPlayerSelectedAnswer(playerIndex: playerIndex, answer: receivedString)
                 }
