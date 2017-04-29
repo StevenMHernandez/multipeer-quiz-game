@@ -124,7 +124,6 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     func nextQuestion() {
-        submitButton.isHidden = false
         question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
         QuestionLabel.text = question?.question
         answerALabel.text = question?.options["A"]
@@ -133,9 +132,13 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         answerDLabel.text = question?.options["D"]
         
         if(question == nil){
+            submitButton.isHidden = true
             restartQuizButton.isHidden = false
             timerLabel.textColor = UIColor.black
             timerLabel.text = "Your Score: \((self.game?.players[0].score)!)"
+        } else {
+            submitButton.isHidden = false
+            restartQuizButton.isHidden = true
         }
         // player is allowed to click their choice
         // after clicking, they can tilt their phone to change their selection
@@ -186,6 +189,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     @IBAction func restartQuizAction(_ sender: Any) {
         //TODO: Start quiz over when pressed
         game?.loadNewQuiz()
+        self.nextQuestion()
     }
     
     func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {

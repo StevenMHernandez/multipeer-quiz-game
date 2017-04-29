@@ -14,57 +14,17 @@ class JsonQuizLoader {
     
     
     func loadNextQuiz() -> Quiz {
+        self.jsonQuestion = [Question]() // clear our questions
         nextQuizNumber += 1
         return self.loadJsonQuiz(quizNumber: nextQuizNumber)
     }
     
     func loadJsonQuiz(quizNumber: Int) -> Quiz {
-        
-        
-        // TODO: build .json url with the `nextQuizNumber`
-        // ex: `http://www.people.vcu.edu/~ebulut/jsonFiles/quiz2.json`
-        // load from this url
-        // if we get a 404, set quizNumber = 1 and retry once
-        // parse json for questions and topic
-        
-        
-        
-        
         jsonQuestion = getJSONData()
-            let topic = "General"
-//        }
-//            
-//        else{
-//            let topic = "Science and Technology"
-//            var options = [String: String]()
-//            options["A"] = "Rome"
-//            options["B"] = "London"
-//            options["C"] = "D.C."
-//            options["D"] = "New York"
-//            jsonQuestion.append(Question(number: 1, question: "What is the capital of USA?", options: options, correctOption: "C"))
-//            var options2 = [String: String]()
-//            options2["A"] = "D.C."
-//            options2["B"] = "London"
-//            options2["C"] = "Rome"
-//            options2["D"] = "New York"
-//            jsonQuestion.append(Question(number: 2, question: "Which option says London?", options: options2, correctOption: "B"))
-//        }
-//        
-        
-        
-        //jsonQuestion.append(Question(number: self.number, question: question as! String, options: optionsForAnswers, correctOption: self.answer))
-        
-        
+        let topic = "General"
         return Quiz(questions: jsonQuestion, topic: topic)
-        
-        
-        
-        
-        
     }
     
-    
-    //TODO Find how to get information from dictionary into quiz
     func getJSONData() -> [Question]{
         //var quiz: Quiz
         let urlString = "http://www.people.vcu.edu/~ebulut/jsonFiles/quiz\(nextQuizNumber).json"
@@ -75,7 +35,6 @@ class JsonQuizLoader {
         let task = session.dataTask(with: url!, completionHandler: {(data,respose, error) in
             
             if let result = data{
-                _ = self.semaphore.wait(timeout: .distantFuture)
                 print("inside get JSON")
                 do{
                     let json = try JSONSerialization.jsonObject(with: result, options: .allowFragments)
@@ -95,20 +54,28 @@ class JsonQuizLoader {
                             self.options.forEach({ (key,option) in //change to map
                                 optionsForAnswers[key] = option
                             })
-                       self.jsonQuestion.append(Question(number: self.number, question: self.question, options: optionsForAnswers, correctOption: self.answer))
-                            
+                            self.jsonQuestion.append(Question(number: self.number, question: self.question, options: optionsForAnswers, correctOption: self.answer))
                         })
-                       
+                        
+                        self.semaphore.signal()
                     }
                 }
                 catch{
-                    print("Error")
+                    print("json file must not exist", urlString)
+                    self.semaphore.signal()
                 }
             }
             
         })
-        semaphore.signal()
         task.resume()
+        _ = self.semaphore.wait(timeout: .distantFuture)
+        
+        if (jsonQuestion.isEmpty) {
+            // json file must not exist, let's default back to quiz 1
+            self.nextQuizNumber = 1
+            self.getJSONData()
+        }
+        
         return jsonQuestion
         
     }
