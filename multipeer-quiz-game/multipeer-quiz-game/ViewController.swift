@@ -38,7 +38,7 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 catch let err {
                     print("Error in sending data \(err)")
                 }
-
+                
                 performSegue(withIdentifier: "toQuiz", sender: self)
             } else {
                 let alert = UIAlertController(title: "Error", message: "Not enough People", preferredStyle: .alert)

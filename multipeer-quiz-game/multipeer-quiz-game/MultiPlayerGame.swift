@@ -42,13 +42,18 @@ class MultiPlayerGame: GenericGame {
         self.timer.stop()
     }
 
-    func awardPointsToPlayers() {
+    func awardPointsToPlayers() -> [Int]{
+        var pointsArray = [Int]()
         for (i, player) in self.players.enumerated() {
             print("player", i, player.selectedAnswer)
             if self.checkAnswer(choice: player.selectedAnswer) {
                 player.awardPoints()
             }
+          pointsArray.append(player.score)
         }
+        return pointsArray
+        //made this method return an integer array to make it easier to show score on screen.
+        //TODO Test with multiplayer
     }
     
     func setPlayerSelectedAnswer(playerIndex: Int, answer: String) {

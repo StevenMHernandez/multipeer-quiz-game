@@ -22,10 +22,12 @@ class SinglePlayerGame: GenericGame {
         self.timer.stop()
     }
     
-    func awardPointsToPlayers() {
+    func awardPointsToPlayers() -> [Int]{
         if self.checkAnswer(choice: self.players[0].selectedAnswer) {
             self.players[0].awardPoints()
         }
+        return[players[0].score,0,0,0]
+        //only returns one score because single player
     }
     
     func setPlayerSelectedAnswer(playerIndex: Int, answer: String) {

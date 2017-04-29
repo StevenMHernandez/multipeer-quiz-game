@@ -11,10 +11,10 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
      * we let this object handle that logic itself
      */
     var game: GenericGame?
-
+    
     var session: MCSession!
     var browser: MCBrowserViewController!
-
+    
     var selectedOption: String?
     var jsonQuiz = JsonQuizLoader()
     var players: [Player]!
@@ -53,7 +53,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 answerDView.backgroundColor = UIColor.lightGray
                 answerABool = true; answerBBool = false
                 answerCBool = false; answerDBool = false
-                selectedOption = answerALabel.text
+                selectedOption = "A"
             } else if touch.view == self.answerBLabel {
                 answerAView.backgroundColor = UIColor.lightGray
                 answerBView.backgroundColor = UIColor.yellow
@@ -61,7 +61,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 answerDView.backgroundColor = UIColor.lightGray
                 answerABool = false; answerBBool = true
                 answerCBool = false;  answerDBool = false
-                selectedOption = answerBLabel.text
+                selectedOption = "B"
             } else if touch.view == self.answerCLabel {
                 answerAView.backgroundColor = UIColor.lightGray
                 answerBView.backgroundColor = UIColor.lightGray
@@ -69,7 +69,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 answerDView.backgroundColor = UIColor.lightGray
                 answerABool = false; answerBBool = false
                 answerCBool = true; answerDBool = false
-                selectedOption = answerCLabel.text
+                selectedOption = "C"
             } else if touch.view == self.answerDLabel {
                 answerAView.backgroundColor = UIColor.lightGray
                 answerBView.backgroundColor = UIColor.lightGray
@@ -77,7 +77,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
                 answerDView.backgroundColor = UIColor.yellow
                 answerABool = false; answerBBool = false
                 answerCBool = false; answerDBool = true
-                selectedOption = answerDLabel.text
+                selectedOption = "D"
             } else{
                 print("touch Registered")
                 return
@@ -85,7 +85,9 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             
         }
     }
-    
+//    override func loadView() {
+//        game?.loadNewQuiz()
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "The Game."
@@ -97,13 +99,12 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(QuizController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
-        jsonQuiz.getJSONData()
         game?.loadNewQuiz()
         
         // Load first Question:
         self.nextQuestion()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         session.delegate = self
@@ -153,7 +154,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     func questionTimerEnded() {
-        game?.awardPointsToPlayers()
+        var pointsArray = game?.awardPointsToPlayers()
         
         if(selectedOption != nil && question.checkSelection(selectedOption!)){
             print("correct answer")
@@ -161,9 +162,18 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             submitButton.isHidden = true
         }
         else{
-            timerLabel.text = "incorrect"
+            timerLabel.text = "Incorrect"
             submitButton.isHidden = true
         }
+        let player1Points = pointsArray?[0]
+        let player2Points = pointsArray?[1]
+        let player3Points = pointsArray?[2]
+        let player4Points = pointsArray?[3]
+        player1Score.text = String(player1Points!)
+        player2Score.text = String(player2Points!)
+        player3Score.text = String(player3Points!)
+        player4Score.text = String(player4Points!)
+        
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
     }
     
@@ -172,21 +182,21 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             game?.submitSelection(selectedOption!)
         }
     }
-
+    
     @IBAction func restartQuizAction(_ sender: Any) {
         //TODO: Start quiz over when pressed
         game?.loadNewQuiz()
     }
-
+    
     func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
     }
-
+    
     func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
     }
-
+    
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
     }
-
+    
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         // this needs to be run on the main thread
         DispatchQueue.main.async(execute: {
@@ -203,14 +213,14 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             }
         })
     }
-
+    
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
     }
-
+    
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
     }
-
+    
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL, withError error: Error?) {
     }
-
+    
 }

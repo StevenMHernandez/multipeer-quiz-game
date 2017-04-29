@@ -11,13 +11,13 @@ protocol GenericGame {
     var quiz: Quiz? {get set}
     func canStartGame() -> Bool
     func submitSelection(_ choice: String)
-    func awardPointsToPlayers()
+    func awardPointsToPlayers() -> [Int]
     func setPlayerSelectedAnswer(playerIndex: Int, answer: String)
 }
 
 // Extensions show the base methods (not extended)
 extension GenericGame {
-
+    
     mutating func loadNewQuiz() {
         self.quiz = self.jsonQuizLoader.loadNextQuiz()
         
@@ -26,7 +26,7 @@ extension GenericGame {
     
     func nextQuestion(renderTimerCallback: @escaping ((Int) -> Void), timeEndedCallback: @escaping (() -> Void)) -> Question? {
         let question = quiz?.getNextQuestion()
-
+        
         if question != nil {
             timer.startQuestionTimer(renderTimerCallback: renderTimerCallback, timeEndedCallback: timeEndedCallback)
         }
@@ -35,17 +35,20 @@ extension GenericGame {
     }
     
     func checkAnswer(choice: String) -> Bool {
-        return choice == self.quiz?.questions[(self.quiz?.currentQuestion)!].correctOption
+        if(choice != ""){
+            return choice == self.quiz?.questions[(self.quiz?.currentQuestion)!].correctOption
+        }
+        else{return false}
     }
-
+    
     func getPlayerIndex(by peerID: MCPeerID) -> Int {
         for (index, player) in self.players.enumerated() {
             if (player.peerId == peerID) {
                 return index
             }
         }
-
+        
         return -1
     }
-
+    
 }

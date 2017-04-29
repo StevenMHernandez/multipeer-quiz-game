@@ -91,9 +91,9 @@
 		B0FF7BAA1EAB863A0060113A /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B0FF7BB21EAB8B500060113A /* JsonQuizLoader.swift */,
 				B0FF7BAB1EAB867E0060113A /* MultiPlayerGame.swift */,
 				B0FF7BAD1EAB86CB0060113A /* GenericGame.swift */,
-				B0FF7BB21EAB8B500060113A /* JsonQuizLoader.swift */,
 				B0FF7BB81EAB93B30060113A /* QuestionTimer.swift */,
 				B0FF7BBC1EAB9E6F0060113A /* SinglePlayerGame.swift */,
 			);

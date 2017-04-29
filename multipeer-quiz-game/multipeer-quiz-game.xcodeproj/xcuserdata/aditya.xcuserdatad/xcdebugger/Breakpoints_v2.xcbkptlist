@@ -9,29 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "multipeer-quiz-game/QuizController.swift"
-            timestampString = "514960883.813643"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "multipeer-quiz-game/ViewController.swift"
             timestampString = "514960491.391212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "113"
             endingLineNumber = "113"
-            landmarkName = "prepare(for:sender:)"
+            landmarkName = "session(_:didReceive:fromPeer:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "multipeer-quiz-game/Models/Question.swift"
-            timestampString = "514961089.284307"
+            filePath = "multipeer-quiz-game/Services/JsonQuizLoader.swift"
+            timestampString = "515120988.226263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "checkSelection(_:)"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "loadJsonQuiz(quizNumber:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
