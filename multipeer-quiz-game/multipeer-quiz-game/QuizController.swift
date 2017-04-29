@@ -269,6 +269,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     func back(sender: UIBarButtonItem) {
+        self.game?.endGame()
         do{
             let data =  NSKeyedArchiver.archivedData(withRootObject: "GO_BACK")
             try self.session?.send(data, toPeers: (self.session?.connectedPeers)!, with: .unreliable)
@@ -298,12 +299,6 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             submitButton.isHidden = false
             restartQuizButton.isHidden = true
         }
-        // player is allowed to click their choice
-        // after clicking, they can tilt their phone to change their selection
-        // or shake to pick something random
-        
-        // Submit happens by acceleration in the `z` direction
-        // or yaw in each direction
     }
     
     func renderTimer(timeRemaining: Int) {
@@ -328,13 +323,18 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             submitButton.isHidden = true
         }
         let player1Points = pointsArray?[0]
-        let player2Points = pointsArray?[1]
-        let player3Points = pointsArray?[2]
-        let player4Points = pointsArray?[3]
         player1Score.text = String(player1Points!)
+        let player2Points = pointsArray?[1]
         player2Score.text = String(player2Points!)
-        player3Score.text = String(player3Points!)
-        player4Score.text = String(player4Points!)
+        if (pointsArray?.count)! > 2 {
+            let player3Points = pointsArray?[2]
+            player3Score.text = String(player3Points!)
+        }
+        
+        if (pointsArray?.count)! > 2 {
+            let player4Points = pointsArray?[3]
+            player4Score.text = String(player4Points!)
+        }
 
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
     }
@@ -346,7 +346,14 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     @IBAction func restartQuizAction(_ sender: Any) {
-        //TODO: Start quiz over when pressed
+        do{
+            let data =  NSKeyedArchiver.archivedData(withRootObject: "NEW_GAME")
+            try self.session?.send(data, toPeers: (self.session?.connectedPeers)!, with: .unreliable)
+        }
+        catch let err {
+            print("Error in sending data \(err)")
+        }
+        
         game?.loadNewQuiz()
         self.nextQuestion()
     }
@@ -367,7 +374,8 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             if let receivedString = NSKeyedUnarchiver.unarchiveObject(with: data) as? String {
                 switch receivedString {
                 case "NEW_GAME":
-                    print("TODO: start a new game")
+                    self.game?.loadNewQuiz()
+                    self.nextQuestion()
                 case "GO_BACK":
                     _ = self.navigationController?.popViewController(animated: true)
                 default:

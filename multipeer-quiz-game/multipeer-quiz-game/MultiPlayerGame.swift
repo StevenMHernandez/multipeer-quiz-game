@@ -7,19 +7,19 @@ class MultiPlayerGame: GenericGame {
     var jsonQuizLoader = JsonQuizLoader()
     var quiz: Quiz?
     var session: MCSession?
-
+    
     init(currentPlayer: Player, session: MCSession) {
         self.players.append(currentPlayer)
         self.session = session
     }
-
+    
     func canStartGame() -> Bool {
         return players.count > 1 && players.count <= 4
     }
-
+    
     func submitSelection(_ choice: String) {
         self.players[0].selectedAnswer = choice
-
+        
         do{
             let data =  NSKeyedArchiver.archivedData(withRootObject: choice)
             try self.session?.send(data, toPeers: (self.session?.connectedPeers)!, with: .unreliable)
@@ -27,10 +27,10 @@ class MultiPlayerGame: GenericGame {
         catch let err {
             print("Error in sending data \(err)")
         }
-
+        
         self.checkIfEveryOneIsDone()
     }
-
+    
     func checkIfEveryOneIsDone() {
         // check if everyone has made a choice:
         for (_, player) in self.players.enumerated() {
@@ -38,10 +38,10 @@ class MultiPlayerGame: GenericGame {
                 return // because we need to wait until this player selects an answer
             }
         }
-
+        
         self.timer.stop()
     }
-
+    
     func awardPointsToPlayers() -> [Int]{
         var pointsArray = [Int]()
         for (i, player) in self.players.enumerated() {
@@ -49,11 +49,11 @@ class MultiPlayerGame: GenericGame {
             if self.checkAnswer(choice: player.selectedAnswer) {
                 player.awardPoints()
             }
-          pointsArray.append(player.score)
+            pointsArray.append(player.score)
+            player.selectedAnswer = ""
         }
+        
         return pointsArray
-        //made this method return an integer array to make it easier to show score on screen.
-        //TODO Test with multiplayer
     }
     
     func setPlayerSelectedAnswer(playerIndex: Int, answer: String) {

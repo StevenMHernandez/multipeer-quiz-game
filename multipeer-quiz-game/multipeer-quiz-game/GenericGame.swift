@@ -51,4 +51,7 @@ extension GenericGame {
         return -1
     }
     
+    func endGame() {
+        self.timer.stop()
+    }
 }
