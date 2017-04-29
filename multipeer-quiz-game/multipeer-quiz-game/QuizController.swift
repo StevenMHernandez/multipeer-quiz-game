@@ -1,5 +1,7 @@
 import UIKit
 import MultipeerConnectivity
+import CoreMotion
+import GameplayKit
 
 class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessionDelegate {
     /*
@@ -41,7 +43,9 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     var answerCBool = false
     var answerDBool = false
     
+    var motionManager: CMMotionManager!
     
+    var timerRunning = false
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -85,9 +89,49 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
             
         }
     }
-//    override func loadView() {
-//        game?.loadNewQuiz()
-//    }
+    
+    func selectAnswer(answer: String) {
+        if answer == "A" {
+            answerAView.backgroundColor = UIColor.yellow
+            answerBView.backgroundColor = UIColor.lightGray
+            answerCView.backgroundColor = UIColor.lightGray
+            answerDView.backgroundColor = UIColor.lightGray
+            answerABool = true; answerBBool = false
+            answerCBool = false; answerDBool = false
+            selectedOption = "A"
+        } else if answer == "B" {
+            answerAView.backgroundColor = UIColor.lightGray
+            answerBView.backgroundColor = UIColor.yellow
+            answerCView.backgroundColor = UIColor.lightGray
+            answerDView.backgroundColor = UIColor.lightGray
+            answerABool = false; answerBBool = true
+            answerCBool = false;  answerDBool = false
+            selectedOption = "B"
+        } else if answer == "C" {
+            answerAView.backgroundColor = UIColor.lightGray
+            answerBView.backgroundColor = UIColor.lightGray
+            answerCView.backgroundColor = UIColor.yellow
+            answerDView.backgroundColor = UIColor.lightGray
+            answerABool = false; answerBBool = false
+            answerCBool = true; answerDBool = false
+            selectedOption = "C"
+        } else if answer == "D" {
+            answerAView.backgroundColor = UIColor.lightGray
+            answerBView.backgroundColor = UIColor.lightGray
+            answerCView.backgroundColor = UIColor.lightGray
+            answerDView.backgroundColor = UIColor.yellow
+            answerABool = false; answerBBool = false
+            answerCBool = false; answerDBool = true
+            selectedOption = "D"
+        } else{
+            print("unknown answer value:", answer)
+            return
+        }
+    }
+    
+    //    override func loadView() {
+    //        game?.loadNewQuiz()
+    //    }
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "The Game."
@@ -99,16 +143,129 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(QuizController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
         
+        //        monitorDeviceOrientation()
+        self.motionManager = CMMotionManager()
+        
         game?.loadNewQuiz()
         
         // Load first Question:
         self.nextQuestion()
     }
     
+    
+    //    func monitorDeviceOrientation(){
+    //
+    //        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+    //
+    //        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    //    }
+    
+    //    func orientationChanged(_ notification: Notification){
+    //        print(UIDevice.current.orientation.rawValue)
+    ////        lbl.text = String(UIDevice.current.orientation.rawValue)
+    //    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         session.delegate = self
         browser.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.motionManager.deviceMotionUpdateInterval = 1.0/60.0
+        self.motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical)
+        
+                Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(updateDeviceMotion), userInfo: nil, repeats: true)
+        
+        //        let cmmam = CMMotionActivityManager()
+        //        cmmam.startActivityUpdates(to: .main, withHandler: { (data) in
+        //            if let inVehicle = data?.automotive{
+        //
+        //                if (inVehicle) {
+        //                    print(" I am inside a vehicle")
+        //                }
+        //            }
+        //        })
+    }
+    
+    
+    
+        func updateDeviceMotion(){
+    
+            if let data = self.motionManager.deviceMotion {
+    
+                // orientation of body relat    ive to a reference frame
+                let attitude = data.attitude
+    
+                let userAcceleration = data.userAcceleration
+    
+                let gravity = data.gravity
+                let rotation = data.rotationRate
+                
+                if userAcceleration.z > 2.5 || attitude.yaw > 1.0 || attitude.yaw < -1.0 {
+                    self.submitSelection(userAcceleration)
+                    return
+                }
+                
+                if rotation.x < -3.0 {
+                    if answerCBool {
+                        self.selectAnswer(answer: "A")
+                    }
+                    if answerDBool {
+                        self.selectAnswer(answer: "B")
+                    }
+                }
+                
+                if rotation.x > 3.0 {
+                    if answerABool {
+                        self.selectAnswer(answer: "C")
+                    }
+                    if answerBBool {
+                        self.selectAnswer(answer: "D")
+                    }
+                }
+                
+                if rotation.y < -3.0 {
+                    if answerBBool {
+                        self.selectAnswer(answer: "A")
+                    }
+                    if answerDBool {
+                        self.selectAnswer(answer: "C")
+                    }
+                }
+                
+                if rotation.y > 3.0 {
+                    if answerABool {
+                        self.selectAnswer(answer: "B")
+                    }
+                    if answerCBool {
+                        self.selectAnswer(answer: "D")
+                    }
+                }
+            }
+    
+        }
+    
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.motionManager.stopDeviceMotionUpdates()
+    }
+    
+    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        
+        if motion == .motionShake {
+            // TODO: pick a random item
+            let optionsList = ["A","B","C","D"]
+            let randomList = (GKRandomSource.sharedRandom().arrayByShufflingObjects(in: optionsList) as! [String])
+            self.selectAnswer(answer: randomList[0])
+        }
+        
+    }
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        print("motionEnded")
     }
     
     func back(sender: UIBarButtonItem) {
@@ -124,6 +281,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     func nextQuestion() {
+        timerRunning = true;
         question = game?.nextQuestion(renderTimerCallback: renderTimer, timeEndedCallback: questionTimerEnded)
         QuestionLabel.text = question?.question
         answerALabel.text = question?.options["A"]
@@ -157,6 +315,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     }
     
     func questionTimerEnded() {
+        timerRunning = false;
         var pointsArray = game?.awardPointsToPlayers()
         
         if(selectedOption != nil && question.checkSelection(selectedOption!)){
@@ -176,12 +335,12 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         player2Score.text = String(player2Points!)
         player3Score.text = String(player3Points!)
         player4Score.text = String(player4Points!)
-        
+
         Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(nextQuestion), userInfo: nil, repeats: false)
     }
     
     @IBAction func submitSelection(_ sender: Any) {
-        if(answerABool || answerBBool || answerCBool || answerDBool){
+        if timerRunning && (answerABool || answerBBool || answerCBool || answerDBool) {
             game?.submitSelection(selectedOption!)
         }
     }
