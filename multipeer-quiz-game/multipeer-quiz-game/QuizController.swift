@@ -2,6 +2,7 @@ import UIKit
 import MultipeerConnectivity
 import CoreMotion
 import GameplayKit
+import Firebase
 
 class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessionDelegate {
     /*
@@ -140,6 +141,8 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         super.viewDidLoad()
         title = "The Game."
         
+        FIRApp.configure()
+        
         session.delegate = self
         browser.delegate = self
         self.navigationItem.hidesBackButton = true
@@ -148,8 +151,8 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         player1Icon.image = self.game?.players[0].image
         if((self.game?.players.count)! > 1){
         player2Icon.image = self.game?.players[1].image
-        player3Icon.image = self.game?.players[2].image
-        player4Icon.image = self.game?.players[3].image
+//        player3Icon.image = self.game?.players[2].image
+//        player4Icon.image = self.game?.players[3].image
         }
         //        monitorDeviceOrientation()
         self.motionManager = CMMotionManager()

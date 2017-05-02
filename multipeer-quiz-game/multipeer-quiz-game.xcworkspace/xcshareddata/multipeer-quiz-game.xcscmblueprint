@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C1E7AC42B613BDE1396797B52208B06D0E3CE900",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C1E7AC42B613BDE1396797B52208B06D0E3CE900" : 9223372036854775807,
+    "417BDDE8BFA47CBCE1074EC4C18B97A21CC207C7" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0CA444AD-B289-403D-BFD4-E3FA0B80850F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C1E7AC42B613BDE1396797B52208B06D0E3CE900" : "project5\/",
+    "417BDDE8BFA47CBCE1074EC4C18B97A21CC207C7" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "multipeer-quiz-game",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "multipeer-quiz-game\/multipeer-quiz-game.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:StevenMHernandez\/cmsc491.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "417BDDE8BFA47CBCE1074EC4C18B97A21CC207C7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:StevenMHernandez\/multipeer-quiz-game.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C1E7AC42B613BDE1396797B52208B06D0E3CE900"
+    }
+  ]
+}
