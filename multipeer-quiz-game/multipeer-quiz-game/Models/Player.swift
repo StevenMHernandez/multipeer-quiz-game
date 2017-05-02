@@ -13,11 +13,16 @@ class Player {
     
     var selectedAnswer = ""
     
+    func randPicture() -> UIImage{
+        let randNum = arc4random_uniform(4)+1
+        let icon = UIImage(named: "icon\(randNum)")
+        return icon!
+    }
+    
     init(peerId: MCPeerID) {
         self.peerId = peerId
-        
-        // TODO: select a random image for the player here
         self.image = UIImage()
+        self.image = randPicture()
     }
     
     init(peerId: MCPeerID, image: UIImage) {

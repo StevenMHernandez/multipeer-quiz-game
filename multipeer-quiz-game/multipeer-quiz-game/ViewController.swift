@@ -145,7 +145,6 @@ class ViewController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let quizViewController = segue.destination as! QuizController
         quizViewController.game = self.multiplayer ? self.multiplayerGame : self.singlePlayerGame
-
         quizViewController.session = self.session
         quizViewController.browser = self.browser
     }

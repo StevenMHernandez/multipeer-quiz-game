@@ -38,6 +38,10 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
     @IBOutlet weak var player3Score: UILabel!
     @IBOutlet weak var player4Score: UILabel!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var player1Icon: UIImageView!
+    @IBOutlet weak var player2Icon: UIImageView!
+    @IBOutlet weak var player3Icon: UIImageView!
+    @IBOutlet weak var player4Icon: UIImageView!
     var answerABool = false
     var answerBBool = false
     var answerCBool = false
@@ -138,11 +142,15 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         
         session.delegate = self
         browser.delegate = self
-        
         self.navigationItem.hidesBackButton = true
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(QuizController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
-        
+        player1Icon.image = self.game?.players[0].image
+        if((self.game?.players.count)! > 1){
+        player2Icon.image = self.game?.players[1].image
+        player3Icon.image = self.game?.players[2].image
+        player4Icon.image = self.game?.players[3].image
+        }
         //        monitorDeviceOrientation()
         self.motionManager = CMMotionManager()
         
@@ -169,6 +177,7 @@ class QuizController: UIViewController, MCBrowserViewControllerDelegate, MCSessi
         super.viewDidAppear(animated)
         session.delegate = self
         browser.delegate = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

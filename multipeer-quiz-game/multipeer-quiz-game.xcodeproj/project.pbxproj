@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4818F8921EB7E8E300C061DC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4818F8911EB7E8E300C061DC /* GoogleService-Info.plist */; };
 		487AE0F51EB1A605000C1E17 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = 487AE0F41EB1A605000C1E17 /* data.json */; };
 		B0520DEF1EA92AE400FF11D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0520DEE1EA92AE400FF11D6 /* AppDelegate.swift */; };
 		B0520DF11EA92AE400FF11D6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0520DF01EA92AE400FF11D6 /* ViewController.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4818F8911EB7E8E300C061DC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		487AE0F41EB1A605000C1E17 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		B0520DEB1EA92AE400FF11D6 /* multipeer-quiz-game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "multipeer-quiz-game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0520DEE1EA92AE400FF11D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				B0520DF51EA92AE400FF11D6 /* Assets.xcassets */,
 				B0520DF71EA92AE400FF11D6 /* LaunchScreen.storyboard */,
 				487AE0F41EB1A605000C1E17 /* data.json */,
+				4818F8911EB7E8E300C061DC /* GoogleService-Info.plist */,
 			);
 			path = "multipeer-quiz-game";
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 			files = (
 				B0520DF91EA92AE400FF11D6 /* LaunchScreen.storyboard in Resources */,
 				B0520DF61EA92AE400FF11D6 /* Assets.xcassets in Resources */,
+				4818F8921EB7E8E300C061DC /* GoogleService-Info.plist in Resources */,
 				B0520DF41EA92AE400FF11D6 /* Main.storyboard in Resources */,
 				487AE0F51EB1A605000C1E17 /* data.json in Resources */,
 			);
